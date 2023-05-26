@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
 
-const Anecdote = ({anecdotes, index}) => {
+const Anecdote = ({anecdotes, index, votes}) => {
 
   return(
+
     <p>{anecdotes[index]}</p>
-    
+        
   )
 
 }
@@ -21,6 +22,10 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+
+
+  const [votes, setVotes] = useState(new Uint8Array(anecdotes.length))
    
   const [selected, setSelected] = useState(0)
 
@@ -31,14 +36,36 @@ const App = () => {
 
   }
 
+  const handleVote = () => {
+
+    const newVotes = [...votes]
+    newVotes[selected] += 1
+    setVotes(newVotes)
+    
+  }
+
   return (
     <div>
 
+      <button onClick={handleVote}>Vote</button>
       <button onClick={selectRandom}>Random anecdote</button>
       <br></br>
-      {console.log(selected)}
-      {console.log(anecdotes[selected])}
-      <Anecdote anecdotes={anecdotes} index={selected}/>
+      <br></br>
+      <table>
+        <tbody>
+          <tr>
+            <td>Votes</td>
+            <td> | </td>
+            <td>Anecdote</td>
+          </tr>
+          <tr>
+            <td>{votes[selected]}</td>
+            <td></td>
+            <td><Anecdote anecdotes={anecdotes} index={selected} votes={votes}/></td>
+          </tr>
+        </tbody>
+      </table>
+      
       
       
     </div>
