@@ -1,79 +1,33 @@
-
-// Header takes care of rendering the name of the course
-// Content renders the parts and their number of exercises
-// Total renders the total number of exercises
-
-const Header = (param) => {
-
-  return(
-    <h1>{param.courseName.name}</h1>
-  )
-}
-
-const Content = (props) => {
-
-  
-  return (
-    <div>
-      <Part part= {props.parts.parts[0]}/>
-      <Part part= {props.parts.parts[1]}/>
-      <Part part= {props.parts.parts[2]}/>
-    </div>
-    )
-}
-
-const Part = (props) => {
-  return (
-    <p>{props.part.name} {props.part.exercises}</p>
-  )
-}
-
-const Total = (props) => {
-  let res = 0
-
-  props.totalExercises.parts.forEach(e => {
-    res += e.exercises
-  });
-
-  return (<p>Number of exercises {res}</p>)
-}
+import { useState } from 'react'
 
 
 
 
 const App = () => {
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
-  const course = {
+  
 
-    name: "Half Stack application development",
-    
-    parts :
-    [
-      {
-        name: "Fundamentals  of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises : 7,
-      },
-      {
-        name : "State of a component",
-        exercises : 14,
-      }
-    ] 
-  }
 
   return (
     <div>
-      <Header courseName={course}/>
-      
-      <Content  parts={course}/>
+      <h1>Give feedback</h1>
+      <button onClick={() => setGood(good + 1)}>Good</button>
+      <button onClick={() => setNeutral(neutral + 1)}>Neutral</button>
+      <button onClick={() => setBad(bad + 1)}>Bad</button>
 
-      <Total totalExercises={course}/>
-      
+      <h2>Statistics</h2>
+      <p>Good: {good}</p>
+      <p>Neutral: {neutral}</p>
+      <p>Bad: {bad}</p>
+      <p>All: {good + neutral + bad}</p>
+      <p>Average: {(good  - bad) }</p>
+      <p>Positive: {good/(good + neutral + bad) *100 }%</p>
     </div>
   )
 }
-  
-export default App;
+
+export default App
