@@ -11,10 +11,18 @@ const App = () => {
 
   const addContact = (event) => {
     event.preventDefault();
+
+    const found = persons.some(person => person.name === newName)
+    
+    if (found) {
+      alert(`${newName} is already added to the Phonebook`);
+      return
+    } 
+    
     const newNameObject = {
       name: newName,
     };
-
+  
     setPersons([...persons, newNameObject]);
     setNewName("");
   };
