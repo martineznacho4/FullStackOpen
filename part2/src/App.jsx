@@ -1,61 +1,47 @@
-/* eslint-disable react/prop-types */
+import { useState } from "react";
 
-import Course from './components/Course'
+const Person = ({ name }) => {
+  return <p>{name}</p>;
+};
 
 const App = () => {
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
 
-  
-  const courses = [
-    {
-      id: 1,
-      name: "Half Stack application development",
-      parts: [
-        {
-          name: "Fundamentals of React",
-          exercises: 10,
-          id: 1,
-        },
-        {
-          name: "Using props to pass data",
-          exercises: 7,
-          id: 2,
-        },
-        {
-          name: "State of a component",
-          exercises: 14,
-          id: 3,
-        },
-        {
-          name: "Redux",
-          exercises: 11,
-          id: 4,
-        },
-      ],
-    },
+  const [newName, setNewName] = useState("");
 
-    {
-      id: 2,
-      name: "Node.JS",
-      parts: [
-        {
-          name: "Routing",
-          exercises: 3,
-          id: 1,
-        },
-        {
-          name: "Middleware",
-          exercises: 7,
-          id: 2,
-        },
-      ],
-    },
-  ];
+  const addContact = (event) => {
+    event.preventDefault();
+    const newNameObject = {
+      name: newName,
+    };
+
+    setPersons([...persons, newNameObject]);
+    setNewName("");
+  };
+
+  const handleNewName = (event) => {
+    setNewName(event.target.value);
+  };
+
   return (
-    <>
-      {courses.map((course) => (
-        <Course key={course.id} course={course} />
-      ))}
-    </>
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addContact}>
+        <div>
+          name: <input value={newName} onChange={handleNewName} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      <ul>
+        {persons.map((person) => (
+          <Person key={person.name} name={person.name} />
+        ))}
+      </ul>
+      ...
+    </div>
   );
 };
 
