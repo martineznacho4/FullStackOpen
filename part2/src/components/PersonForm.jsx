@@ -1,39 +1,36 @@
-const PersonForm = ({
-	persons,
-	setPersons,
-	newName,
-	handleNewName,
-	newNumber,
-	handleNewNumber,
-	setNewName,
-	setNewNumber,
-}) => {
+const PersonForm = ({states, setters, handlers, personService}) => {
 	const addContact = (event) => {
 		event.preventDefault();
-		const found = persons.some((person) => person.name === newName);
+
+		const found = states.persons.some((person) => person.name === states.newName);
 
 		if (found) {
-			alert(`${newName} is already added to the Phonebook`);
+			alert(`${states.newName} is already added to the Phonebook`);
 			return;
 		}
 
 		const newNameObject = {
-			name: newName,
-			number: newNumber,
-			id: persons.length + 1,
+			name: states.newName,
+			number: states.newNumber,
 		};
-		setPersons([...persons, newNameObject]);
-		setNewName("");
-		setNewNumber("");
+
+		personService.create(newNameObject).then((newPerson) => {
+			
+			setters.setPersons([...states.persons, newPerson]);
+			setters.setNewName("");
+			setters.setNewNumber("");
+			
+		})
+
 	};
 
 	return (
 		<form onSubmit={addContact}>
 			<div>
-				name: <input value={newName} onChange={handleNewName} />
+				name: <input value={states.newName} onChange={handlers.handleNewName} />
 			</div>
 			<div>
-				number: <input value={newNumber} onChange={handleNewNumber} />
+				number: <input value={states.newNumber} onChange={handlers.handleNewNumber} />
 			</div>
 			<div>
 				<button type="submit">add</button>

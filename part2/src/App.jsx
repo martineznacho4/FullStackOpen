@@ -3,14 +3,11 @@ import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonRender from "./components/PersonRender";
 import axios from "axios";
+import personService from "./service/persons";
 
 const App = () => {
 	useEffect(() => {
-		axios
-		.get("http://localhost:3001/persons")
-		.then((response) => {
-			setPersons(response.data);
-		});
+		personService.getAll().then((initialData) => setPersons(initialData));
 	}, []);
 
 	const [persons, setPersons] = useState([]);
@@ -19,6 +16,24 @@ const App = () => {
 	const [isFiltered, setIsFiltered] = useState(false);
 	const [filteredPersons, setFilteredPersons] = useState([]);
 	const [newFilter, setNewFilter] = useState("");
+
+	const states = {
+		persons,
+		newName,
+		newNumber,
+		isFiltered,
+		filteredPersons,
+		newFilter,
+	};
+
+	const setters = {
+		setPersons,
+		setNewName,
+		setNewNumber,
+		setIsFiltered,
+		setFilteredPersons,
+		setNewFilter,
+	};
 
 	const handleNewName = (event) => {
 		setNewName(event.target.value);
@@ -31,6 +46,8 @@ const App = () => {
 	const handleFilter = (e) => {
 		setNewFilter(e.target.value);
 	};
+
+	const handlers = { handleNewName, handleNewNumber, handleFilter };
 
 	return (
 		<div>
@@ -47,14 +64,10 @@ const App = () => {
 			<h3>Add new contact</h3>
 
 			<PersonForm
-				persons={persons}
-				setPersons={setPersons}
-				newName={newName}
-				handleNewName={handleNewName}
-				newNumber={newNumber}
-				handleNewNumber={handleNewNumber}
-				setNewName={setNewName}
-				setNewNumber={setNewNumber}
+				states={states}
+				setters={setters}
+				handlers={handlers}
+				personService={personService}
 			/>
 
 			<h2>Numbers</h2>
