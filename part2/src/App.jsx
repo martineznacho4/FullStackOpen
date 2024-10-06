@@ -53,13 +53,7 @@ const App = () => {
 		<div>
 			<h2>Phonebook</h2>
 
-			<Filter
-				newFilter={newFilter}
-				handleFilter={handleFilter}
-				setIsFiltered={setIsFiltered}
-				setFilteredPersons={setFilteredPersons}
-				persons={persons}
-			/>
+			<Filter states={states} setters={setters} handlers={handlers} />
 
 			<h3>Add new contact</h3>
 
@@ -74,8 +68,8 @@ const App = () => {
 
 			<PersonRender
 				isFiltered={isFiltered}
-				filteredPersons={filteredPersons}
 				persons={persons}
+				filteredPersons={filteredPersons}
 			/>
 		</div>
 	);

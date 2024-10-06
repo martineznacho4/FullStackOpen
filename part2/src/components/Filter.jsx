@@ -1,23 +1,20 @@
-const Filter = ({
-	newFilter,
-	handleFilter,
-	setIsFiltered,
-	setFilteredPersons,
-	persons,
-}) => {
+const Filter = ({ states, handlers, setters }) => {
 	const filterPersons = (event) => {
-		setIsFiltered(true);
+		setters.setIsFiltered(true);
 
-		setFilteredPersons(
-			persons.filter((person) =>
-				person.name.toLowerCase().includes(newFilter.toLowerCase())
+		setters.setFilteredPersons(
+			states.persons.filter((person) =>
+				person.name
+					.toLowerCase()
+					.includes(states.newFilter.toLowerCase())
 			)
 		);
 	};
 
 	return (
 		<div>
-			Search filter: <input value={newFilter} onChange={handleFilter} />{" "}
+			Search filter:{" "}
+			<input value={states.newFilter} onChange={handlers.handleFilter} />{" "}
 			<button onClick={filterPersons}>Apply</button>
 		</div>
 	);
