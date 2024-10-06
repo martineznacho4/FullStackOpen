@@ -66,11 +66,28 @@ const App = () => {
 		}
 	};
 
+	const handleUpdateNumber = (id, newPhoneNumber) => {
+		const person = persons.find((p) => p.id === id);
+
+		const updatedPerson = { ...person, number: newPhoneNumber };
+
+		personService
+			.update(id, updatedPerson)
+			.then((returnedPerson) =>
+				setPersons(
+					persons.map((person) =>
+						person.id !== id ? person : returnedPerson
+					)
+				)
+			);
+	};
+
 	const handlers = {
 		handleNewName,
 		handleNewNumber,
 		handleFilter,
 		handleRemove,
+		handleUpdateNumber,
 	};
 
 	return (
