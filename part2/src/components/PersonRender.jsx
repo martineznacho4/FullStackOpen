@@ -1,21 +1,29 @@
 import Person from "./Person";
 
-const PersonRender = ({ isFiltered, filteredPersons, persons }) => {
+const PersonRender = ({ states, setters, handlers, personService }) => {
 	return (
 		<ul>
-			{isFiltered
-				? filteredPersons.map((person) => (
+			{states.isFiltered
+				? states.filteredPersons.map((person) => (
 						<Person
 							key={person.id}
 							name={person.name}
 							number={person.number}
+							personService={personService}
+							handleRemove={() => {
+								handlers.handleRemove(person.id);
+							}}
 						/>
 				  ))
-				: persons.map((person) => (
+				: states.persons.map((person) => (
 						<Person
 							key={person.id}
 							name={person.name}
 							number={person.number}
+							personService={personService}
+							handleRemove={() => {
+								handlers.handleRemove(person.id);
+							}}
 						/>
 				  ))}
 		</ul>

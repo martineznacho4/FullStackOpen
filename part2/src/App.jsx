@@ -47,7 +47,31 @@ const App = () => {
 		setNewFilter(e.target.value);
 	};
 
-	const handlers = { handleNewName, handleNewNumber, handleFilter };
+	const handleRemove = (id) => {
+		if (
+			window.confirm(
+				`Do you really want to remove ${
+					persons.find((person) => person.id === id).name
+				}?`
+			)
+		) {
+			personService
+				.remove(id)
+				.then((deletedPerson) => {
+					setPersons(persons.filter((person) => person.id !== id));
+				})
+				.catch((error) => {
+					alert(`Unable to remove the id: ${id}`);
+				});
+		}
+	};
+
+	const handlers = {
+		handleNewName,
+		handleNewNumber,
+		handleFilter,
+		handleRemove,
+	};
 
 	return (
 		<div>
@@ -67,9 +91,10 @@ const App = () => {
 			<h2>Numbers</h2>
 
 			<PersonRender
-				isFiltered={isFiltered}
-				persons={persons}
-				filteredPersons={filteredPersons}
+				states={states}
+				setters={setters}
+				handlers={handlers}
+				personService={personService}
 			/>
 		</div>
 	);
