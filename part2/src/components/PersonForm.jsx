@@ -25,7 +25,9 @@ const PersonForm = ({ states, setters, handlers, personService }) => {
 				setters.setPersons([...states.persons, newPerson]);
 				setters.setNewName("");
 				setters.setNewNumber("");
-			});
+			},
+			setters.setNotification(`Added ${states.newName} to the Phonebook`),
+			setTimeout(() => {setters.setNotification(null)},5000));
 		}
 	};
 

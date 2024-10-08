@@ -16,7 +16,7 @@ const App = () => {
 	const [isFiltered, setIsFiltered] = useState(false);
 	const [filteredPersons, setFilteredPersons] = useState([]);
 	const [newFilter, setNewFilter] = useState("");
-	const [errorMessage, setErrorMessage] = useState(null)
+	const [notification, setNotification] = useState(null)
 
 	const states = {
 		persons,
@@ -25,6 +25,7 @@ const App = () => {
 		isFiltered,
 		filteredPersons,
 		newFilter,
+		notification
 	};
 
 	const setters = {
@@ -34,6 +35,7 @@ const App = () => {
 		setIsFiltered,
 		setFilteredPersons,
 		setNewFilter,
+		setNotification
 	};
 
 	const handleNewName = (event) => {
@@ -62,10 +64,10 @@ const App = () => {
 					setPersons(persons.filter((person) => person.id !== id));
 				})
 				.catch((error) => {
-					setErrorMessage(`Unable to remove ${persons.find((person) => person.id === id).name}`)
+					setNotification(`Unable to remove ${persons.find((person) => person.id === id).name}`)
 					
 					setTimeout(() => {
-						setErrorMessage(null)
+						setNotification(null)
 					}, 5000)
 
 				});
@@ -84,8 +86,11 @@ const App = () => {
 					persons.map((person) =>
 						person.id !== id ? person : returnedPerson
 					)
-				)
-			);
+				),
+				setNotification(`Updated ${person.name}'s number`),
+				setTimeout(() => {setNotification(null)},5000)
+			)
+			
 	};
 
 	const handlers = {
@@ -101,7 +106,7 @@ const App = () => {
 			<h2>Phonebook</h2>
 
 			
-			<Notification message={errorMessage}/>
+			<Notification message={notification}/>
 
 			<Filter states={states} setters={setters} handlers={handlers} />
 
