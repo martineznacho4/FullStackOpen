@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonRender from "./components/PersonRender";
-import axios from "axios";
+import Notification from "./components/Notification";
 import personService from "./service/persons";
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
 	const [isFiltered, setIsFiltered] = useState(false);
 	const [filteredPersons, setFilteredPersons] = useState([]);
 	const [newFilter, setNewFilter] = useState("");
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	const states = {
 		persons,
@@ -61,7 +62,12 @@ const App = () => {
 					setPersons(persons.filter((person) => person.id !== id));
 				})
 				.catch((error) => {
-					alert(`Unable to remove the id: ${id}`);
+					setErrorMessage(`Unable to remove ${persons.find((person) => person.id === id).name}`)
+					
+					setTimeout(() => {
+						setErrorMessage(null)
+					}, 5000)
+
 				});
 		}
 	};
@@ -93,6 +99,9 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+
+			
+			<Notification message={errorMessage}/>
 
 			<Filter states={states} setters={setters} handlers={handlers} />
 
