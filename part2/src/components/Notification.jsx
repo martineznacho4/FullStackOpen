@@ -4,7 +4,7 @@ const Notification = ({message}) => {
     }
 
     return(
-        <div className="notification">
+        <div className= {message.includes("Unable")? "fail":"success"} >
             {message}
         </div>
     )

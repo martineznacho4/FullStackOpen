@@ -16,7 +16,7 @@ const App = () => {
 	const [isFiltered, setIsFiltered] = useState(false);
 	const [filteredPersons, setFilteredPersons] = useState([]);
 	const [newFilter, setNewFilter] = useState("");
-	const [notification, setNotification] = useState(null)
+	const [notification, setNotification] = useState(null);
 
 	const states = {
 		persons,
@@ -25,7 +25,7 @@ const App = () => {
 		isFiltered,
 		filteredPersons,
 		newFilter,
-		notification
+		notification,
 	};
 
 	const setters = {
@@ -35,7 +35,7 @@ const App = () => {
 		setIsFiltered,
 		setFilteredPersons,
 		setNewFilter,
-		setNotification
+		setNotification,
 	};
 
 	const handleNewName = (event) => {
@@ -51,25 +51,28 @@ const App = () => {
 	};
 
 	const handleRemove = (id) => {
-		if (
-			window.confirm(
-				`Do you really want to remove ${
-					persons.find((person) => person.id === id).name
-				}?`
-			)
-		) {
+		const user = persons.find((person) => person.id === id);
+		if (window.confirm(`Do you really want to remove ${user.name}?`)) {
 			personService
 				.remove(id)
-				.then((deletedPerson) => {
-					setPersons(persons.filter((person) => person.id !== id));
-				})
-				.catch((error) => {
-					setNotification(`Unable to remove ${persons.find((person) => person.id === id).name}`)
-					
-					setTimeout(() => {
-						setNotification(null)
-					}, 5000)
+				.then(
+					(deletedPerson) => {
+						setPersons(
+							persons.filter((person) => person.id !== id)
+						);
+					},
+					setNotification(`Removed ${user.name} from the Phonebook`),
 
+					setTimeout(() => {
+						setNotification(null);
+					}, 5000)
+				)
+				.catch((error) => {
+					setNotification(`Unable to remove ${user.name}`);
+
+					setTimeout(() => {
+						setNotification(null);
+					}, 5000);
 				});
 		}
 	};
@@ -81,16 +84,24 @@ const App = () => {
 
 		personService
 			.update(id, updatedPerson)
-			.then((returnedPerson) =>
-				setPersons(
-					persons.map((person) =>
-						person.id !== id ? person : returnedPerson
-					)
-				),
+			.then(
+				(returnedPerson) =>
+					setPersons(
+						persons.map((person) =>
+							person.id !== id ? person : returnedPerson
+						)
+					),
 				setNotification(`Updated ${person.name}'s number`),
-				setTimeout(() => {setNotification(null)},5000)
+				setTimeout(() => {
+					setNotification(null);
+				}, 5000)
 			)
-			
+			.catch((error) => {
+				setNotification(`Unable to update ${person.name}'s number`),
+					setTimeout(() => {
+						setNotification(null);
+					}, 5000);
+			});
 	};
 
 	const handlers = {
@@ -105,8 +116,7 @@ const App = () => {
 		<div>
 			<h2>Phonebook</h2>
 
-			
-			<Notification message={notification}/>
+			<Notification message={notification} />
 
 			<Filter states={states} setters={setters} handlers={handlers} />
 
